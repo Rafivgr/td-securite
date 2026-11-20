@@ -5,6 +5,7 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter, withComponentInputBinding } from '@angular/router';
 import { routes } from './app.routes';
 
+
 registerLocaleData(localeFr);
 
 export const appConfig: ApplicationConfig = {

@@ -67,10 +67,16 @@ Tout le monde voit tous les comptes, et **alice**, une simple cliente, vient de 
 ## Partie 1 : Basic Auth sur Spring
 
 1. Ajoutez `org.springframework.boot:spring-boot-starter-security`. Relancez : que renvoie maintenant l'API ?
+L'API ne renvoie plus la liste du compte mais une erreur 401, ce qui montre que tout le monde n'a plus accés à tout les comptes
+
 2. Déclarez le bean `PasswordEncoder` (BCrypt) : c'est lui qui comparera le mot de passe reçu au hash en base.
 3. Écrivez un `UserDetailsService` qui charge l'`Utilisateur` en base par son login.
 4. Écrivez la `SecurityFilterChain` : Basic Auth, sans session (`STATELESS`), toutes les requêtes `/api/**` authentifiées.
 5. Vérifiez avec `curl -u alice:alice123 localhost:8080/api/me`, puis décodez l'en-tête `Authorization: Basic …` (`echo … | base64 -d`). Est-ce du chiffrement ?
+Résultat : vagner-rafael@vag-ASUS-EXPERTBOOK:~/td-securite$ echo "YWxpY2U6YWxpY2UxMjM=" | base64 -d ; echo
+alice:alice123.
+Non, ce n’est pas du chiffrement, juste de l’encodage réversible
+
 6. Remplacez `UtilisateurCourantFake` par un `UtilisateurCourant` qui lit le `SecurityContext`.
 7. Le front reçoit une erreur CORS : le navigateur envoie un `OPTIONS` **sans** identifiants. Autorisez-le dans la chaîne (`.cors(...)`).
 

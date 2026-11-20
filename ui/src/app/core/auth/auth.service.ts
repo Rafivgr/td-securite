@@ -1,4 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
+import { API } from '../api/banque'
 
 export interface Utilisateur {
   readonly login: string;
@@ -11,6 +14,9 @@ export interface Utilisateur {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   readonly utilisateur = signal<Utilisateur | null>(null);
+  private readonly http = inject(HttpClient);
+  private login?: string;
+  private password?: string;
 
   /**
    * Vérifie les identifiants auprès du serveur (GET /api/me avec l'en-tête
@@ -19,6 +25,10 @@ export class AuthService {
   async connecter(login: string, motDePasse: string): Promise<void> {
     // TODO : appeler /api/me, retenir les identifiants pour l'intercepteur,
     // puis renseigner `utilisateur`.
+    this.login = login;
+    this.password = motDePasse;
+    return firstValueFrom(this.http.get<void>(`${API}/virements`))
+
     throw new Error('Pas encore implémenté');
   }
 
